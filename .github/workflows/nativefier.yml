@@ -29,12 +29,18 @@ jobs:
         with:
           node-version: '14'
 
-      - run: npm i -g nativefier
+      - run: |
+          npm i -g nativefier
+
+      - if: matrix.os == "windows"
+        run: |
+          apt-get update
+          apt-get -y install wine64
 
       - run: make build ARCH=${{ matrix.arch }} OS=${{ matrix.os }}
 
       - uses: actions/upload-artifact@v2
         with:
-          name: dist
+          name: ${{ matrix.os }}-${{ matrix.arch }}
           path: |
-            Sphere-${{ matrix.os }}-${{ matrix.arch }}
+            Sphere-*
