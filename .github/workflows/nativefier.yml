@@ -1,0 +1,40 @@
+---
+name: nativefier
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        arch:
+          - x64
+          - arm64
+        os:
+          - linux
+          - darwin
+          - windows
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - run: npm i -g nativefier
+
+      - run: make build ARCH=${{ matrix.arch }} OS=${{ matrix.os }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: |
+            Sphere-${{ matrix.os }}-${{ matrix.arch }}
