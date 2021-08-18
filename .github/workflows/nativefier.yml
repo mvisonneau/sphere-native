@@ -32,7 +32,7 @@ jobs:
       - run: |
           npm i -g nativefier
 
-      - if: matrix.os == "windows"
+      - if: ${{ matrix.os == 'windows' }}
         run: |
           apt-get update
           apt-get -y install wine64
