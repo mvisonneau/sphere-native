@@ -34,8 +34,8 @@ jobs:
 
       - if: ${{ matrix.os == 'windows' }}
         run: |
-          apt-get update
-          apt-get -y install wine64
+          sudo apt-get update
+          sudo apt-get -y install wine64
 
       - run: make build ARCH=${{ matrix.arch }} OS=${{ matrix.os }}
 
